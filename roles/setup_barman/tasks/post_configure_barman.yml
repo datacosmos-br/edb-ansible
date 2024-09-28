@@ -1,3 +1,4 @@
+# @format
 ---
 - name: Get Barman server informations
   ansible.builtin.set_fact:
@@ -91,3 +92,4 @@
   changed_when: true
   when:
     - "'primary' in group_names"
+    - not skip_barman_backup | default(false)

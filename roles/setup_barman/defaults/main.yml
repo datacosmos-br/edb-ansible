@@ -22,6 +22,8 @@ validate_only: false
 use_validation: true
 remove_only: false
 
+skip_barman_backup: false
+
 supported_os:
   - Debian10
   - CentOS7
