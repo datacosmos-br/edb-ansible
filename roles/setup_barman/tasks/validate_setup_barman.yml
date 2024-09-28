@@ -167,6 +167,8 @@
     fail_msg: "Backup for {{ primary_inventory_hostname }}-{{ pg_instance_name }}'s server has failed"
     success_msg: "Backup for {{ primary_inventory_hostname }}-{{ pg_instance_name }}'s server was successful"
   run_once: true
+  when:
+    - not skip_barman_backup | default(false)
 
 - name: Reset variables
   ansible.builtin.set_fact:
