@@ -7,14 +7,14 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute ansible-lint
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: |
           docker run --rm -v $(pwd):/data cytopia/ansible-lint playbook.yml
   setup-repo:
     runs-on: ubuntu-20.04
     name: Execute setup_repo tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute install_dbserver tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute init_dbserver tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_replication tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute manage_dbserver tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_pgpool2 tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute manage_pgpool2 tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_pgbouncer tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute manage_pgbouncer tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -95,7 +95,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_repmgr tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_dbt2_driver tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_dbt2_client tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
@@ -122,7 +122,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_dbt2 tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install ansible -y
       - run: make
       - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_dbt2 rocky8
@@ -130,7 +130,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_dbt3 tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install ansible -y
       - run: make
       - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_dbt3 rocky8
@@ -138,7 +138,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Execute setup_dbt7 tests for PostgreSQL 14 on RockyLinux8
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: sudo apt install ansible -y
       - run: make
       - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_dbt7 rocky8
