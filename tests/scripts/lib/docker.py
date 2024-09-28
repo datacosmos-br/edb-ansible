@@ -84,10 +84,15 @@ class DockerContainer():
 CentOS/RockyLinux/Almalinux family
 """
 class DockerCentosContainer(DockerContainer):
-
     def start_sshd(self):
-        self.exec('/bin/systemctl start sshd')
-
+        try:
+            # Generate SSH host keys, if they don't already exist
+            self.log("Generating SSH host keys")
+            self.exec('/usr/bin/ssh-keygen -A')
+            self.exec('/bin/systemctl start sshd')
+        except Exception as e:
+            self.log(f"systemctl failed: {str(e)}. Attempting to start sshd directly.")
+            self.exec('/usr/sbin/sshd')
 
 class DockerCentos7Container(DockerCentosContainer):
     pass
@@ -129,9 +134,15 @@ class DockerOraclelinux9Container(DockerCentosContainer):
 Debian family
 """
 class DockerDebianContainer(DockerContainer):
-
     def start_sshd(self):
-        self.exec('/bin/systemctl start ssh.service')
+        try:
+            # Generate SSH host keys, if they don't already exist
+            self.log("Generating SSH host keys")
+            self.exec('/usr/bin/ssh-keygen -A')
+            self.exec('/bin/systemctl start sshd')
+        except Exception as e:
+            self.log(f"systemctl failed: {str(e)}. Attempting to start sshd directly.")
+            self.exec('/usr/sbin/sshd')
 
 
 class DockerDebian9Container(DockerDebianContainer):
@@ -158,7 +169,15 @@ SUSE family
 """
 class DockerSuseContainer(DockerContainer):
     def start_sshd(self):
-        self.exec('/bin/systemctl start sshd')
+        try:
+            # Generate SSH host keys, if they don't already exist
+            self.log("Generating SSH host keys")
+            self.exec('/usr/bin/ssh-keygen -A')
+            self.exec('/bin/systemctl start sshd')
+        except Exception as e:
+            self.log(f"systemctl failed: {str(e)}. Attempting to start sshd directly.")
+            self.exec('/usr/sbin/sshd')
+
 
 
 class DockerSuse15Container(DockerSuseContainer):
