@@ -5,11 +5,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: 
-    - composer
-    - docker
-    - pip
-    - github-actions
+  - package-ecosystem: "composer, docker, pip, github-actions"
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
