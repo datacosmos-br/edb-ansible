@@ -1,3 +1,4 @@
+# @format
 ---
 # test repuser was created correctly
 - name: Run query to check if repuser was created correctly
@@ -147,7 +148,7 @@
 - name: Check if replication was successful on standby(s)
   ansible.builtin.assert:
     that:
-      - rep_slots_query_result.results[0].query_result[0]['slot_name'] == inventory_hostname
+      - rep_slots_query_result.results[0].query_result[0]['slot_name'] == inventory_hostname.replace('-', '_')
     fail_msg: "Replication was not successful on standby(s)"
     success_msg: "Replication was successful on standby(s)"
   when: use_replication_slots
