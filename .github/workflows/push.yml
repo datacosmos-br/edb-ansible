@@ -4,141 +4,310 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute ansible-lint
     steps:
       - uses: actions/checkout@v4
       - run: |
           docker run --rm -v $(pwd):/data cytopia/ansible-lint playbook.yml
+
   setup-repo:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_repo tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-repo
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_repo rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_repo rocky8
+
   install-dbserver:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute install_dbserver tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: install-dbserver
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/install_dbserver rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/install_dbserver rocky8
+
   initdb-dbserver:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute init_dbserver tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: initdb-dbserver
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/init_dbserver rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/init_dbserver rocky8
+
   setup-replication:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_replication tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-replication
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_replication rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_replication rocky8
+
   manage-dbserver:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute manage_dbserver tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: manage-dbserver
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/manage_dbserver rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/manage_dbserver rocky8
+
   setup-pgpool2:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_pgpool2 tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-pgpool2
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_pgpool2 rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_pgpool2 rocky8
+
   manage-pgpool2:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute manage_pgpool2 tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: manage-pgpool2
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/manage_pgpool2 rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/manage_pgpool2 rocky8
+
   setup-pgbouncer:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_pgbouncer tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-pgbouncer
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_pgbouncer rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_pgbouncer rocky8
+
   manage-pgbouncer:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute manage_pgbouncer tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: manage-pgbouncer
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/manage_pgbouncer rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/manage_pgbouncer rocky8
+
   setup-repmgr:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_repmgr tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-repmgr
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_repmgr rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_repmgr rocky8
+
   setup-dbt2-driver:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_dbt2_driver tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-dbt2-driver
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_dbt2_driver rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_dbt2_driver rocky8
+
   setup-dbt2-client:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_dbt2_client tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-dbt2-client
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install python3-pip -y
       - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_dbt2_client rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_dbt2_client rocky8
+
   setup-dbt2:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_dbt2 tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-dbt2
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt install ansible -y
+      - run: sudo apt install python3-pip -y
+      - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_dbt2 rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_dbt2 rocky8
+
   setup-dbt3:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_dbt3 tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-dbt3
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt install ansible -y
+      - run: sudo apt install python3-pip -y
+      - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_dbt3 rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_dbt3 rocky8
+
   setup-dbt7:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Execute setup_dbt7 tests for PostgreSQL 14 on RockyLinux8
+    concurrency:
+      group: setup-dbt7
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt install ansible -y
+      - run: sudo apt install python3-pip -y
+      - run: sudo pip3 install ansible-core
       - run: make
-      - run: ANSIBLE_CORE_VERSION=2.14 EDB_PG_TYPE=PG EDB_PG_VERSION=14 EDB_ENABLE_REPO=false make -C tests/cases/setup_dbt7 rocky8
+      - run: |
+          ANSIBLE_LOG_PATH=ansible.log \
+          ANSIBLE_DEBUG=True \
+          ANSIBLE_CORE_VERSION=2.14 \
+          EDB_PG_TYPE=PG \
+          EDB_PG_VERSION=14 \
+          EDB_ENABLE_REPO=false \
+          make -C tests/cases/setup_dbt7 rocky8
+  
