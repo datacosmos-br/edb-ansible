@@ -1,3 +1,4 @@
+# @format
 ---
 - name: Get Barman server informations
   ansible.builtin.set_fact:
@@ -156,6 +157,8 @@
   delegate_to: "{{ _barman_server_inventory_hostname }}"
   register: barman_backup_res
   changed_when: barman_backup_res.rc == '0'
+  when:
+    - not skip_barman_backup | default(false)
 
 - name: Check if backup server has been configured correctly.
   ansible.builtin.assert:
