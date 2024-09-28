@@ -560,7 +560,9 @@ cases:
     os:
     - rocky8
     - rocky9
+    - centos7
     - almalinux8
+    - almalinux9
     - debian10
     - ubuntu20
   setup_haproxy:
@@ -578,3 +580,6 @@ cases:
     - rocky9
     - centos7
     - almalinux8
+    - almalinux9
+    - debian10
+    - ubuntu20
